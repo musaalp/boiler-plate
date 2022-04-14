@@ -1,23 +1,20 @@
-﻿using Data.Utils;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sdk.Helpers.SerializerHelper;
+using Sdk.Helpers.CryptoHelper;
 using System.Reflection;
 
-namespace Data.Extensions
+namespace Service.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddData(this IServiceCollection services, IConfiguration configuration)
+        public static void AddService(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<IOrderDbConnection>(s =>
-                new OrderDbConnection(configuration.GetConnectionString("OrderDbConnection")));
-
-            services.AddSingleton<ISerializerHelper, SerializerHelper>();
             AddMediatr(services);
             AddFluentValidation(services);
+
+            services.AddSingleton<ICryptoHelper, CryptoHelper>();
         }
 
         private static void AddMediatr(IServiceCollection services)
