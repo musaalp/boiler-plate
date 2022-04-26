@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Sdk.Helpers.CryptoHelper;
+using Service.Utils.Helpers;
 using System.Reflection;
 
 namespace Service.Extensions
@@ -14,6 +15,7 @@ namespace Service.Extensions
             AddMediatr(services);
             AddFluentValidation(services);
 
+            services.AddSingleton<IBinWidthCalculator, BinWdithCalculator>();
             services.AddSingleton<ICryptoHelper, CryptoHelper>();
         }
 

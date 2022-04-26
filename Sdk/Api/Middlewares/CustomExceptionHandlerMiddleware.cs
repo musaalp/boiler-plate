@@ -1,16 +1,11 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Sdk.Api.Dtos;
 using Sdk.Core.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using ValidationException = Sdk.Core.Exceptions.ValidationException;
 
 namespace Sdk.Api.Middlewares
 {
@@ -37,7 +32,7 @@ namespace Sdk.Api.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var validationFailures = new List<ValidationFailure>();
+            var errors = new List<Error>();
             var code = HttpStatusCode.InternalServerError;
 
             switch (ex)
@@ -45,35 +40,31 @@ namespace Sdk.Api.Middlewares
                 case CustomException customException:
                     {
                         code = customException.StatusCode;
-                        validationFailures.Add(new ValidationFailure
-                        {
-                            ErrorMessage = customException.Message,
-                        });
+                        errors.Add(new Error(ExceptionType.Custom, null, customException.Message));
                         break;
                     }
                 case ValidationException validationException:
                     {
                         code = HttpStatusCode.BadRequest;
-                        validationFailures = validationException.Errors.ToList();
+                        errors.AddRange(validationException.Failures
+                            .Select(f => new Error(ExceptionType.Validation, f.Key, f.Value))
+                            .ToList());
                         break;
                     }
                 case Exception exception:
                     {
-                        validationFailures.Add(new ValidationFailure
-                        {
-                            ErrorMessage = exception.Message,
-                        });
+                        errors.Add(new Error(ExceptionType.System, "system", exception.Message));
                         break;
                     }
             }
 
             await BuildApiResponseDto(context, new ApiResponseDto
             {
-                Errors = validationFailures
+                Errors = errors
             }, (int)code);
         }
 
-        private static Task BuildApiResponseDto(HttpContext context, ApiResponseDto apiResponseDto,
+        private Task BuildApiResponseDto(HttpContext context, ApiResponseDto apiResponseDto,
             int statusCode)
         {
             string response = JsonConvert.SerializeObject(apiResponseDto);

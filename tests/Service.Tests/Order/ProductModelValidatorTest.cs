@@ -1,5 +1,4 @@
 ﻿using FluentValidation.TestHelper;
-using Service.Orders;
 using Service.Orders.Models;
 using Xunit;
 
