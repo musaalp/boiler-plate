@@ -1,8 +1,8 @@
 # Order API
 Order API is a sample application build using 
-* Asp.Net Core 3.1,
+* .Net 6,
 * MySQL
-* Dapper 2.0.78
+* Dapper
 * MediatR
 
 The architecture and design of the project is explained below
@@ -11,8 +11,8 @@ The architecture and design of the project is explained below
 ## Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or Visual Studio 2019](https://visualstudio.microsoft.com/vs/) (version 16.3 or later)
-* [.NET Core SDK 3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
+* [Visual Studio Code or Visual Studio 2022](https://visualstudio.microsoft.com/vs/)
+* [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * [MySQL](https://www.mysql.com)
 
 
@@ -84,18 +84,17 @@ If everything goes well data layer returns to service layer, service layer retur
 
 #### Used techs and libraries
 
-* Dapper 2.0.78
+* Dapper 2.0.123
 * FluentValidation 9.5.3
 * FluentValidation.AspNetCore 9.5.3
-* MediatR 9.0.0
-* MediatR.Extensions.Microsoft.DependencyInjection 9.0.0
-* Microsoft.Extensions.DependencyInjection 5.0.1
-* MySql.Data 8.0.23
+* MediatR 10.0.1
+* MediatR.Extensions.Microsoft.DependencyInjection 10.0.1
+* Microsoft.Extensions.DependencyInjection 6.0.0
+* MySql.Data 8.0.30
 * Swashbuckle.AspNetCore 6.1.1
-* Microsoft.NET.Test.Sdk 16.5.0
-* xunit 2.4.0
-* xunit.runner.visualstudio 2.4.0
-* coverlet.collector 1.2.0
+* Microsoft.NET.Test.Sdk 17.2.0
+* xunit 2.4.1
+* coverlet.collector 3.1.2
 
 
 #### Key Concepts
